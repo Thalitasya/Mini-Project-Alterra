@@ -1,124 +1,134 @@
-import React, { useState } from "react";
-import supabase from "./Supabaseclient";
+import { useState } from "react";
+import { supabase } from "../components/Lib/helper/supabaseClient";
 
 export default function AddMenuForm() {
   const [menuName, setMenuName] = useState("");
-  const [menuPrice, setMenuPrice] = useState("");
-  const [menuImage, setMenuImage] = useState(null);
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
-  const handleMenuNameChange = (e) => {
-    setMenuName(e.target.value);
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
   };
 
-  const handleMenuPriceChange = (e) => {
-    setMenuPrice(e.target.value);
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsUploading(true);
+    setErrorMessage(null);
 
-  const handleMenuImageChange = (e) => {
-    const file = e.target.files[0];
-    setMenuImage(file);
-  };
+    try {
+      // Upload gambar ke penyimpanan Supabase
+      let imageUrl = null;
+      if (image) {
+        const { data, error } = await supabase.storage
+          .from("menu-images")
+          .upload(`menu-images/${image.name}`, image);
+        if (error) {
+          throw error;
+        }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Lakukan sesuatu dengan data menu yang diisi dan gambar yang diunggah
+        imageUrl = `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/${data.path}`;
+      }
+
+      // Simpan data menu ke database Supabase bersama dengan URL gambar
+      const { data: menuData, error: menuError } = await supabase
+        .from("menu")
+        .insert([
+          {
+            menu_name: menuName,
+            price: parseFloat(price),
+            image_url: imageUrl,
+          },
+        ]);
+
+      if (menuError) {
+        throw menuError;
+      }
+
+      // Reset form setelah berhasil menambahkan menu
+      setMenuName("");
+      setPrice("");
+      setImage(null);
+      alert("Menu added successfully!");
+    } catch (error) {
+      console.error("Error adding menu:", error.message);
+      setErrorMessage("Failed to add menu. Please try again.");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="space-y-12">
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
-            Profile
-          </h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            This information will be displayed publicly so be careful what you
-            share.
-          </p>
-        </div>
-
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
-            Add Menu
-          </h2>
-
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="Product"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Product
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="Product"
-                  id="Product"
-                  autoComplete="given-name"
-                  value={menuName}
-                  onChange={handleMenuNameChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="Harga"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Harga
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="Harga"
-                  id="Harga"
-                  autoComplete="family-name"
-                  value={menuPrice}
-                  onChange={handleMenuPriceChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-6">
-              <label
-                htmlFor="menuImage"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Gambar Menu
-              </label>
-              <div className="mt-2">
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="menuImage"
-                  id="menuImage"
-                  onChange={handleMenuImageChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="mt-6 sm:col-span-6 flex items-center justify-end gap-x-6">
-              <button
-                type="button"
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Save
-              </button>
-            </div>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="max-w-md w-full mx-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        >
+          <div className="mb-4">
+            <label
+              htmlFor="menuName"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Menu Name
+            </label>
+            <input
+              type="text"
+              id="menuName"
+              value={menuName}
+              onChange={(e) => setMenuName(e.target.value)}
+              className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:border-indigo-500"
+            />
           </div>
-        </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="price"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Price
+            </label>
+            <input
+              type="number"
+              id="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:border-indigo-500"
+            />
+          </div>
+
+          <div className="mb-6">
+            <label
+              htmlFor="image"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Image
+            </label>
+            <input
+              type="file"
+              id="image"
+              onChange={handleImageChange}
+              accept="image/*"
+              className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:border-indigo-500"
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              disabled={isUploading}
+              className={`bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
+                isUploading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {isUploading ? "Adding..." : "Add Menu"}
+            </button>
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
