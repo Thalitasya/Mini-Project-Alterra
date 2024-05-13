@@ -1,9 +1,11 @@
 import React from "react";
 
+// Komponen Footer merupakan bagian bawah dari halaman web, menyediakan informasi kontak dan tautan
 const Footer = () => {
   return (
-    <div className="bg-gradient-to-r from-purple-100 to-purple-300 text-black rounded-t-3xl mt-8 md:mt-0">
+    <div className="bg-gradient-to-r from-purple-100 to-purple-300 text-black mt-8 md:mt-0">
       <div className="flex flex-col md:flex-row justify-between p-8 md:px-32 px-5">
+        {/* Bagian pertama: Deskripsi Cafe */}
         <div className="w-full md:w-1/4">
           <h1 className="font-semibold text-xl pb-4">Latithara Cafe</h1>
           <p className="text-sm">
@@ -12,6 +14,7 @@ const Footer = () => {
             daily ritual.
           </p>
         </div>
+        {/* Bagian kedua: Tautan */}
         <div>
           <h1 className="font-medium text-xl pb-4 pt-5 md:pt-0">Links</h1>
           <nav className="flex flex-col gap-2">
@@ -42,6 +45,7 @@ const Footer = () => {
             </a>
           </nav>
         </div>
+        {/* Bagian ketiga: Menu */}
         <div>
           <h1 className="font-medium text-xl pb-4 pt-5 md:pt-0">Menu</h1>
           <nav className="flex flex-col gap-2">
@@ -65,6 +69,7 @@ const Footer = () => {
             </a>
           </nav>
         </div>
+        {/* Bagian keempat: Kontak */}
         <div>
           <h1 className="font-medium text-xl pb-4 pt-5 md:pt-0">Contact Us</h1>
           <nav className="flex flex-col gap-2">
@@ -89,14 +94,12 @@ const Footer = () => {
           </nav>
         </div>
       </div>
+      {/* Bagian bawah: Hak Cipta */}
       <div>
         <p className="text-center py-4">
           @copyright developed by
-          <span className="text-backgroundColor">
-            {" "}
-            {/* Latithara */}
-          </span>
-          | All rights reserved
+          <span className="text-backgroundColor"> {/* Latithara */}</span>| All
+          rights reserved
         </p>
       </div>
     </div>

@@ -1,36 +1,23 @@
 import React from "react";
-import { FaShoppingCart } from "react-icons/fa";
 
-const MenuCard = ({ menu, onRefreshData }) => {
-  const handleRefresh = () => {
-    onRefreshData();
-  };
-
+// Komponen MenuCard digunakan untuk menampilkan detail dari sebuah menu
+const MenuCard = ({ menu }) => {
   return (
-    <div className="w-full lg:w-1/4 bg-gray-400 p-3 rounded-lg">
-      <div>
-        <img
-          className="rounded-xl"
-          src={`https://sksjsvotnzydxcjfanxn.supabase.co/storage/v1/object/public/${menu.image_url}`}
-          alt={menu.menu_name}
-        />
-      </div>
-      <div className="p-2 mt-5">
-        <div className="flex flex-row justify-between">
-          <h3 className="font-semibold text-xl">{menu.menu_name}</h3>
-          <h3 className="font-semibold text-xl">{menu.price}</h3>
-        </div>
-        <div className="flex flex-row justify-between mt-3">
-          <span
-            className="flex items-center bg-white px-3 py-2 rounded-full cursor-pointer"
-            onClick={handleRefresh}
-          >
-            <FaShoppingCart size={20} />
-          </span>
-        </div>
+    <div className="max-w-xs rounded overflow-hidden shadow-lg">
+      {/* Gambar menu */}
+      <img
+        className="w-full h-72 object-cover"
+        src={menu.images} // URL gambar menu dari properti menu.images
+        alt={menu.product_name} // Nama menu sebagai teks alternatif
+      />
+      <div className="px-6 py-4 bg-gray-200">
+        {/* Nama menu */}
+        <div className="font-bold text-xl mb-2">{menu.product_name}</div>
+        {/* Harga menu */}
+        <p className="text-gray-700 text-base">Harga: Rp. {menu.price}</p>
       </div>
     </div>
   );
 };
 
-export default MenuCard;
+export default MenuCard; // Ekspor komponen MenuCard agar bisa digunakan di tempat lain

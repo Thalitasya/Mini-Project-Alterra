@@ -1,80 +1,208 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function OpenAIExample() {
-  const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState("");
-  const [isSubmit, setIsSubmit] = useState(false);
+function CustomerService() {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [conversations, setConversations] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [processingQuestion, setProcessingQuestion] = useState("");
 
-  const API_KEY = import.meta.env.VITE_API_KEY;
+  // Menggunakan useEffect untuk memanggil fungsi generateAnswerForQuestion saat komponen dimuat
+  useEffect(() => {
+    generateAnswerForQuestion();
+  }, []);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setIsSubmit(true);
-    
-    const promptAwal =
-      'Kamu adalah seorang admin cafe, di mana pelanggan akan bertanya tentang menu di kafe ini. Jawab pertanyaan pelanggan dengan ramah dan informatif.';
-    
-    const APIBody = {
-      model: 'gpt-4',
-      messages: [{ role: 'user', content: `${promptAwal} ${inputMessage}` }]
-    };
-    
+  // Fungsi untuk menentukan apakah pertanyaan terkait dengan makanan
+  const isFoodRelated = (question) => /makanan/i.test(question);
+
+  // Fungsi untuk menentukan apakah pertanyaan terkait dengan minuman
+  const isDrinkRelated = (question) => /minuman/i.test(question);
+
+  // Fungsi untuk menentukan apakah pengguna meminta opsi murah
+  const isAskingForCheapOption = (question) => /murah|termurah/i.test(question);
+
+  // Fungsi untuk menentukan apakah pengguna meminta rekomendasi
+  const isAskingForRecommendation = (question) => /rekomendasi/i.test(question);
+
+  // Fungsi untuk menentukan apakah tanggapan dari OpenAI
+  const isResponseOpenAI = (question) =>
+    /(hai|helo|menu yang sehat|refrensi minuman sehat|refrensi makanan sehat)/i.test(
+      question
+    );
+
+  // Fungsi untuk mengambil tanggapan dari OpenAI
+  const getResponseFromOpenAI = async (question) => {
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + API_KEY
+      const response = await axios({
+        url: `${import.meta.env.VITE_GENERATIVE_LANGUAGE_API_URL}?key=${
+          import.meta.env.VITE_GENERATIVE_LANGUAGE_API_KEY
+        }`,
+        method: "POST",
+        data: {
+          contents: [{ parts: [{ text: question }] }],
         },
-        body: JSON.stringify(APIBody)
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch');
-      }
-
-      const data = await response.json();
-      const reply = data.choices[0].message.content;
-
-      setMessages([...messages, { role: 'admin', content: inputMessage }, { role: 'user', content: reply }]);
-      setInputMessage("");
+      return response.data.candidates[0].content.parts[0].text;
     } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setIsSubmit(false);
+      console.error("Error in getting response from OpenAI:", error);
+      throw new Error(
+        "Gagal mengambil tanggapan dari OpenAI, silakan coba lagi!"
+      );
     }
+  };
+
+  // Fungsi untuk menentukan apakah pertanyaan diluar konteks
+  const isOutOfContext = (question) =>
+    !isResponseOpenAI(question) &&
+    !isFoodRelated(question) &&
+    !isDrinkRelated(question);
+
+  // Fungsi untuk menghasilkan jawaban untuk pertanyaan
+  // Fungsi untuk menghasilkan jawaban untuk pertanyaan
+// Fungsi untuk menghasilkan jawaban untuk pertanyaan
+// Fungsi untuk menghasilkan jawaban untuk pertanyaan
+const generateAnswerForQuestion = async (question) => {
+  try {
+    if (isResponseOpenAI(question)) {
+      return await getResponseFromOpenAI(question);
+    } else if (isOutOfContext(question)) {
+      return "Maaf, pertanyaan diluar konteks yang dapat saya jawab hanya terkait dengan menu makanan atau minuman di Latithara Cafe.";
+    } else if (!isFoodRelated(question) && !isDrinkRelated(question)) {
+      return "Maaf, saya hanya dapat menjawab pertanyaan terkait dengan menu makanan atau minuman di Latithara Cafe.";
+    } else {
+      // Informasi minuman termurah
+      const cheapestDrink = "Lemon Tea - Rp 15.000";
+
+      // Rekomendasi minuman best seller
+      const drinkRecommendation =
+        "Rekomendasi minuman kami adalah Latte. Latte kami merupakan minuman best seller di Latithara Cafe.";
+
+      // Menghasilkan jawaban sesuai dengan jenis pertanyaan
+      if (isFoodRelated(question) && isAskingForRecommendation(question)) {
+        return "Rekomendasi makanan kami adalah Croissant. Croissant kami merupakan makanan best seller di Latithara Cafe.";
+      } else if (isFoodRelated(question)) {
+        return "Makanan best seller croissant:\nCroissant - Rp 40.000";
+      } else if (isDrinkRelated(question) && isAskingForRecommendation(question)) {
+        return drinkRecommendation;
+      } else if (isDrinkRelated(question) && isAskingForCheapOption(question)) {
+        return cheapestDrink;
+      } else if (isDrinkRelated(question)) {
+        return drinkRecommendation;
+      }
+    }
+  } catch (error) {
+    console.error("Error in generating answer:", error);
+    throw new Error("Gagal menghasilkan jawaban, silakan coba lagi!");
   }
+};
+
+
+
+  // Fungsi untuk menghasilkan jawaban dan memperbarui state
+  const generateAnswer = async () => {
+    setIsLoading(true);
+    setError(null);
+    setProcessingQuestion(question);
+    try {
+      const newAnswer = await generateAnswerForQuestion(question);
+      setAnswer(newAnswer);
+      const newConversation = { question, answer: newAnswer };
+      setConversations([newConversation, ...conversations]);
+      setQuestion("");
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+    setProcessingQuestion("");
+  };
 
   return (
-    <div className="bg-gray-900 min-h-screen flex flex-col justify-center items-center py-8">
-      <div className="chat-container w-full max-w-lg bg-black rounded shadow-lg">
-        <div className="chat-messages p-4">
-          {messages.map((message, index) => (
-          <div key={index} className={`message-${message.role} mb-4 relative flex items-center`}>
-          <p className={`text-sm p-3 rounded-lg ${message.role === 'admin' ? 'bg-gray-600 text-white' : 'bg-gray-800 text-gray-300'} ${message.role === 'admin' ? 'ml-auto' : 'mr-auto'}`}>{message.content}</p>
-          {index !== messages.length - 1 && <div className="w-full h-0.5 bg-gray-600 absolute bottom-0 left-0 -mb-2"></div>}
-        </div>            
-          ))}
+    <div className="font-roboto bg-gray-100 min-h-screen py-8 text-black">
+      <div className="max-w-6xl mx-auto overflow-hidden mt-20">
+        <h1 className="text-4xl font-bold text-center font-serif">
+          Konsultasi dengan OpenAI
+        </h1>
+      </div>
+      <div className="max-w-7xl py-2 px-2 mx-auto bg-white rounded-md shadow-md overflow-hidden mt-10">
+        <div className="flex flex-col md:flex-row p-2">
+          <div className="w-full md:w-2/3 p-10 m-20 mx-auto">
+            <h2 className="text-2xl font-bold mb-4">Percakapan</h2>
+            {/* Menampilkan daftar percakapan */}
+            {conversations.map((conversation, index) => (
+              <div
+                key={index}
+                className="bg-gray-200 p-4 rounded-md mb-4 flex justify-between items-center"
+              >
+                <div className="mb-2">
+                  <div className="chat chat-start mb-2">
+                    <div className="chat-image avatar">
+                      <div className="w-10 rounded-full">
+                        <img
+                          alt="Foto Profil Pengguna"
+                          src="https://tse2.mm.bing.net/th?id=OIP.dcLFW3GT9AKU4wXacZ_iYAAAAA&pid=Api&P=0&h=220"
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-2 chat-bubble">
+                      <p className="font-bold">User: {conversation.question}</p>
+                    </div>
+                  </div>
+                  <div className="chat chat-end">
+                    <div className="chat-image avatar">
+                      <div className="w-10 rounded-full">
+                        <img
+                          alt="Foto Profil CS"
+                          src="https://tse4.mm.bing.net/th?id=OIP.e2kmkhVwe_O04WYI10eelwAAAA&pid=Api&P=0&h=220"
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-2 chat-bubble">
+                      <p>CS: {conversation.answer}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {/* Menampilkan pesan loading jika pertanyaan sedang diproses */}
+            {processingQuestion && (
+              <div className="bg-gray-200 p-4 rounded-md mb-4">
+                <p className="font-bold">Pertanyaan: {processingQuestion}</p>
+                <p>Jawaban: Memuat...</p>
+              </div>
+            )}
+            {/* Menampilkan pesan error jika terjadi kesalahan */}
+            {error && <p className="text-red-500 mb-4">{error}</p>}
+            {/* Form untuk mengirim pertanyaan */}
+            <div className="mb-4">
+              <textarea
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white"
+                rows="10"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="Masukkan pertanyaan Anda di sini..."
+              ></textarea>
+            </div>
+            <div className="text-center">
+              {/* Tombol untuk mengirim pertanyaan */}
+              <button
+                className={`px-4 py-2 rounded-md text-gray-800 ${
+                  question
+                    ? "bg-pink-200 hover:bg-pink-400"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
+                onClick={generateAnswer}
+                disabled={!question}
+              >
+                Kirim
+              </button>
+            </div>
+          </div>
         </div>
-        <form onSubmit={handleSubmit} className="chat-input-form flex p-4">
-          <input
-            type="text"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="Type your message..."
-            className="chat-input flex-grow px-3 py-2 rounded-l-md border focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            className={`chat-send-button px-4 py-2 bg-gray-500 text-white rounded-r-md ml-2 ${
-              isSubmit ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-600"
-            }`}
-            disabled={isSubmit}
-          >
-            {isSubmit ? "Sending..." : "Send"}
-          </button>
-        </form>
       </div>
     </div>
   );
 }
+
+export default CustomerService;

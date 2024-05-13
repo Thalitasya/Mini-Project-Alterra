@@ -1,33 +1,39 @@
 import React from "react";
 import img from "../assets/img/about.jpg";
-import Button from "../layouts/Button";
 
 const About = () => {
   return (
-<div className="min-h-screen flex flex-col items-center justify-center lg:px-32 px-5 bg-gray-100">
-      <h1 className=" font-semibold text-center text-4xl lg:mt-14 mt-24 mb-8">About Us</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center lg:px-32 bg-gray-100 text-black">
+      {/* Judul */}
+      <h1 className="font-semibold text-center text-4xl lg:mt-14 mt-20 mb-8">
+        About Us
+      </h1>
 
-      <div className=" flex flex-col lg:flex-row items-center gap-5">
-        <div className=" w-full lg:w-2/4">
-          <img className=" rounded-lg" src={img} alt="img" />
+      {/* Konten */}
+      <div className="flex flex-col lg:flex-row items-center gap-4">
+        {/* Gambar */}
+        <div className="w-full lg:w-2/4">
+          <img className="rounded-lg" src={img} alt="img" />
         </div>
-        <div className=" w-full lg:w-2/4 p-4 space-y-3">
-          <h2 className=" font-semibold text-3xl">
+        {/* Deskripsi */}
+        <div className="w-full lg:w-2/4 p-5 space-y-4">
+          <h2 className="font-semibold text-3xl">
             What Makes Our Coffee Special?
           </h2>
           <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi
-            quaerat quia quasi beatae et iste, tempora voluptatum corporis sit
-            pariatur eaque exercitationem, doloribus eum optio nobis cum?
-            Quidem, dolor atque.
+            Kami adalah tempat yang diilhami oleh keindahan kopi dan kenikmatan
+            kuliner. Dengan komitmen kami untuk menyajikan pengalaman yang
+            memuaskan bagi setiap pelanggan, kami berusaha untuk menciptakan
+            suasana yang hangat dan ramah di setiap kunjungan.
           </p>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ut
-            minima perspiciatis doloribus quod repellendus molestiae rerum!
-            Enim, vero natus.
+            Di Latithara Cafe, kami tidak hanya menyajikan kopi berkualitas
+            tinggi dan hidangan lezat, tetapi juga memberikan sentuhan khas dan
+            cerita di setiap hidangan yang kami sajikan. Dari aroma kopi yang
+            menggugah selera hingga cita rasa makanan yang autentik, setiap
+            detik di sini adalah kesempatan untuk merasakan kebahagiaan yang
+            sederhana namun berkesan.
           </p>
-
-          <Button title="Learn More" />
         </div>
       </div>
     </div>
