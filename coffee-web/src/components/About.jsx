@@ -5,7 +5,7 @@ const About = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center lg:px-32 bg-gray-100 text-black">
       {/* Judul */}
-      <h1 className="font-semibold text-center text-4xl lg:mt-14 mt-20 mb-8">
+      <h1 className="font-semibold text-center text-4xl lg:mt-14 mt-20 mb-8 p-5">
         About Us
       </h1>
 

@@ -205,7 +205,7 @@ const AddMenuForm = () => {
             <div className="flex gap-4">
               <button
                 type="submit"
-                className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+                className="bg-gray-500 text-white p-2 rounded hover:bg-gray-400"
               >
                 {editingMenu ? "Perbarui" : "Kirim"}
               </button>

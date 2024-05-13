@@ -92,7 +92,7 @@ const ContactForm = () => {
           ></textarea>
         </div>
         {/* Tombol untuk mengirim formulir */}
-        <div className="flex justify-center py-2 px-4 ">
+        <div className="flex justify-center py-2 px-4 rounded-none ">
           <Button type="submit" title="Kirim" />
         </div>
       </form>

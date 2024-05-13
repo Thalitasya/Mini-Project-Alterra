@@ -189,7 +189,7 @@ const generateAnswerForQuestion = async (question) => {
               <button
                 className={`px-4 py-2 rounded-md text-gray-800 ${
                   question
-                    ? "bg-pink-200 hover:bg-pink-400"
+                    ? "bg-gray-400 hover:bg-gray-300"
                     : "bg-gray-400 cursor-not-allowed"
                 }`}
                 onClick={generateAnswer}
