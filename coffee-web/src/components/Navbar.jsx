@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Impor komponen Link dari react-router-dom
-import { SiCoffeescript } from "react-icons/si"; // Impor ikon dari react-icons
-import { AiOutlineMenuUnfold, AiOutlineClose } from "react-icons/ai"; // Impor ikon dari react-icons
+import { Link } from "react-router-dom";
+import { SiCoffeescript } from "react-icons/si";
+import { AiOutlineMenuUnfold, AiOutlineClose } from "react-icons/ai";
 
-// Komponen Navbar adalah navigasi di bagian atas halaman
+// Komponen Navbar
 const Navbar = ({ setLoggedIn }) => {
   const [menu, setMenu] = useState(false); // State untuk menentukan apakah menu dropdown terbuka atau tertutup
 
   // Fungsi untuk mengubah status menu dropdown
-  const handleChange = () => {
-    setMenu(!menu); // Mengubah nilai state menu menjadi kebalikan dari nilai sebelumnya
+  const toggleMenu = () => {
+    setMenu(!menu);
   };
 
   // Fungsi untuk menutup menu dropdown
   const closeMenu = () => {
-    setMenu(false); // Mengatur nilai state menu menjadi false
+    setMenu(false);
   };
 
   return (
@@ -24,128 +24,55 @@ const Navbar = ({ setLoggedIn }) => {
         {/* Logo dan nama kafe */}
         <div className="flex items-center gap-2 cursor-pointer">
           <span className="text-yellow-900">
-            <SiCoffeescript size={25} /> {/* Ikon kopi */}
+            <SiCoffeescript size={25} /> 
           </span>
-          <h1 className="text-xl font-semibold text-black">Latithara Cafe</h1>{" "}
-          {/* Nama kafe */}
+          <h1 className="text-xl font-semibold text-black">Latithara Cafe</h1> 
         </div>
 
         {/* Navigasi desktop */}
         <nav className="hidden md:flex items-center text-lg font-medium gap-6 text-black">
           {/* Link-menu */}
-          <Link
-            to="/"
-            className="group relative inline-block cursor-pointer hover:text-gray-600 text-base"
-          >
-            Home
-          </Link>
-          <Link
-            to="/menu"
-            className="group relative inline-block cursor-pointer hover:text-gray-600 text-base"
-          >
-            Menu
-          </Link>
+          <NavLink to="/" onClick={closeMenu}>Home</NavLink>
+          <NavLink to="/menu" onClick={closeMenu}>Menu</NavLink>
           {/* Link-link lainnya */}
-          <Link
-            to="/about"
-            className="group relative inline-block cursor-pointer hover:text-gray-600 text-base"
-          >
-            About Us
-          </Link>
-          <Link
-            to="/contact"
-            className="group relative inline-block cursor-pointer hover:text-gray-600 text-base"
-          >
-            Contact Us
-          </Link>
-          <Link
-            to="/customerservice"
-            className="group relative inline-block cursor-pointer hover:text-gray-600 text-base"
-          >
-            Customer Services
-          </Link>
-          <Link
-            to="/answer"
-            className="group relative inline-block cursor-pointer hover:text-gray-600 text-base"
-          >
-            Feedback Customer
-          </Link>
-          <Link
-            to="/admin"
-            className="group relative inline-block cursor-pointer hover:text-gray-600 lg:inline-block text-base"
-          >
-            Admin Login
-          </Link>
+          <NavLink to="/about" onClick={closeMenu}>About Us</NavLink>
+          <NavLink to="/contact" onClick={closeMenu}>Contact Us</NavLink>
+          <NavLink to="/customerservice" onClick={closeMenu}>Customer Services</NavLink>
+          <NavLink to="/answer" onClick={closeMenu}>Feedback Customer</NavLink>
+          <NavLink to="/admin">Admin Login</NavLink>
         </nav>
 
         {/* Tombol menu dropdown untuk tampilan mobile */}
         <div className="md:hidden flex items-center">
-          {menu ? ( // Jika menu terbuka, tampilkan ikon close, jika tidak, tampilkan ikon menu
-            <AiOutlineClose size={25} onClick={handleChange} />
+          {menu ? (
+            <AiOutlineClose size={25} onClick={toggleMenu} className="text-black" />
           ) : (
-            <AiOutlineMenuUnfold size={25} onClick={handleChange} />
+            <AiOutlineMenuUnfold size={25} onClick={toggleMenu} className="text-black" />
           )}
         </div>
       </div>
       {/* Menu dropdown untuk tampilan mobile */}
-      <div
-        className={` ${
-          menu ? "translate-x-0" : "-translate-x-full"
-        } lg:hidden flex flex-col absolute bg-white text-black left-0 top-16 font-semibold text-base text-center pt-8 pb-4 gap-8 w-full h-fit transition-transform duration-300`}
-      >
+      <div className={` ${menu ? "translate-x-0" : "-translate-x-full"} lg:hidden flex flex-col absolute bg-white text-black left-0 top-16 font-semibold text-base text-center pt-8 pb-4 gap-8 w-full h-fit transition-transform duration-300`}>
         {/* Link-menu untuk tampilan mobile */}
-        <Link
-          to="/"
-          className="hover:text-gray-600 transition-all cursor-pointer text-base"
-          onClick={closeMenu}
-        >
-          Home
-        </Link>
-        <Link
-          to="/menu"
-          className="hover:text-gray-600 transition-all cursor-pointer text-base"
-          onClick={closeMenu}
-        >
-          Menu
-        </Link>
+        <NavLink to="/" onClick={closeMenu}>Home</NavLink>
+        <NavLink to="/menu" onClick={closeMenu}>Menu</NavLink>
         {/* Link-link lainnya untuk tampilan mobile */}
-        <Link
-          to="/about"
-          className="hover:text-gray-600 transition-all cursor-pointer text-base"
-          onClick={closeMenu}
-        >
-          About Us
-        </Link>
-        <Link
-          to="/contact"
-          className="hover:text-gray-600 transition-all cursor-pointer text-base"
-          onClick={closeMenu}
-        >
-          Contact Us
-        </Link>
-        <Link
-          to="/customerservice"
-          className="hover:text-gray-600 transition-all cursor-pointer text-base"
-          onClick={closeMenu}
-        >
-          Customer Services
-        </Link>
-        <Link
-          to="/answer"
-          className="hover:text-gray-600 transition-all cursor-pointer text-base"
-          onClick={closeMenu}
-        >
-          Feedback Customer
-        </Link>
-        <Link
-          to="/admin"
-          className="hover:text-gray-600 transition-all cursor-pointer text-base"
-          onClick={closeMenu}
-        >
-          Admin Login
-        </Link>
+        <NavLink to="/about" onClick={closeMenu}>About Us</NavLink>
+        <NavLink to="/contact" onClick={closeMenu}>Contact Us</NavLink>
+        <NavLink to="/customerservice" onClick={closeMenu}>Customer Services</NavLink>
+        <NavLink to="/answer" onClick={closeMenu}>Feedback Customer</NavLink>
+        <NavLink to="/admin" onClick={closeMenu}>Admin Login</NavLink>
       </div>
     </div>
+  );
+};
+
+// Komponen NavLink untuk membuat link dengan perilaku tertentu
+const NavLink = ({ to, children, onClick }) => {
+  return (
+    <Link to={to} className="group relative inline-block cursor-pointer hover:text-gray-600 text-base" onClick={onClick}>
+      {children}
+    </Link>
   );
 };
 
