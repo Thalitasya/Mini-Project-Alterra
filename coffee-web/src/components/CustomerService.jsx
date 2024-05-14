@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function CustomerService() {
+  // State untuk menyimpan pertanyaan, jawaban, riwayat percakapan, status loading dari server, pesan kesalahan, pertayaan sedang diproses
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [conversations, setConversations] = useState([]);
@@ -14,16 +15,10 @@ function CustomerService() {
     generateAnswerForQuestion();
   }, []);
 
-  // Fungsi untuk menentukan apakah pertanyaan terkait dengan makanan
+  // Fungsi untuk menentukan apakah pertanyaan terkait dengan makanan, minuman, opsi termurah, rekomendasi
   const isFoodRelated = (question) => /makanan/i.test(question);
-
-  // Fungsi untuk menentukan apakah pertanyaan terkait dengan minuman
   const isDrinkRelated = (question) => /minuman/i.test(question);
-
-  // Fungsi untuk menentukan apakah pengguna meminta opsi murah
   const isAskingForCheapOption = (question) => /murah|termurah/i.test(question);
-
-  // Fungsi untuk menentukan apakah pengguna meminta rekomendasi
   const isAskingForRecommendation = (question) => /rekomendasi/i.test(question);
 
   // Fungsi untuk menentukan apakah tanggapan dari OpenAI
@@ -35,18 +30,24 @@ function CustomerService() {
   // Fungsi untuk mengambil tanggapan dari OpenAI
   const getResponseFromOpenAI = async (question) => {
     try {
+      //Mengirim permintaan post ke api openai
       const response = await axios({
+        //Url api
         url: `${import.meta.env.VITE_GENERATIVE_LANGUAGE_API_URL}?key=${
           import.meta.env.VITE_GENERATIVE_LANGUAGE_API_KEY
         }`,
-        method: "POST",
+        method: "POST", //Method permintaan post
         data: {
+          //Data yang dikirim dalam permintaan
           contents: [{ parts: [{ text: question }] }],
         },
       });
+      //Mengembalikan teks jawaban dari respons API
       return response.data.candidates[0].content.parts[0].text;
     } catch (error) {
+      //Menangani kesalahan jika terjadi
       console.error("Error in getting response from OpenAI:", error);
+      //Melempar kesalahan lebih spesifik jika terjadi ditempat lain
       throw new Error(
         "Gagal mengambil tanggapan dari OpenAI, silakan coba lagi!"
       );
@@ -59,16 +60,17 @@ function CustomerService() {
     !isFoodRelated(question) &&
     !isDrinkRelated(question);
 
-  // Fungsi untuk menghasilkan jawaban untuk pertanyaan
-  // Fungsi untuk menghasilkan jawaban untuk pertanyaan
-// Fungsi untuk menghasilkan jawaban untuk pertanyaan
+
 // Fungsi untuk menghasilkan jawaban untuk pertanyaan
 const generateAnswerForQuestion = async (question) => {
   try {
+    //Jika pertanyaan membutuhkan respon dari openai
     if (isResponseOpenAI(question)) {
       return await getResponseFromOpenAI(question);
+      //Jika diluar konteks
     } else if (isOutOfContext(question)) {
       return "Maaf, pertanyaan diluar konteks yang dapat saya jawab hanya terkait dengan menu makanan atau minuman di Latithara Cafe.";
+      //Jika tidak terkait makanan dan minuman
     } else if (!isFoodRelated(question) && !isDrinkRelated(question)) {
       return "Maaf, saya hanya dapat menjawab pertanyaan terkait dengan menu makanan atau minuman di Latithara Cafe.";
     } else {
@@ -98,23 +100,32 @@ const generateAnswerForQuestion = async (question) => {
   }
 };
 
-
-
   // Fungsi untuk menghasilkan jawaban dan memperbarui state
   const generateAnswer = async () => {
+    //Mengatur status loading
     setIsLoading(true);
+    // Mengatur pesan kesalahan menjadi null untuk menghapus kesalahan sebelumnya
     setError(null);
+    // Menyimpan pertanyaan yang sedang diproses
     setProcessingQuestion(question);
     try {
+      // Menghasilkan jawaban untuk pertanyaan yang diberikan
       const newAnswer = await generateAnswerForQuestion(question);
+      // Mengatur jawaban yang diterima ke dalam state
       setAnswer(newAnswer);
+      // Membuat objek percakapan baru dengan pertanyaan dan jawaban
       const newConversation = { question, answer: newAnswer };
+      // Menambahkan percakapan baru ke dalam array conversations, dengan percakapan terbaru di bagian depan
       setConversations([newConversation, ...conversations]);
+      // Mengosongkan input pertanyaan setelah jawaban dihasilkan
       setQuestion("");
+      // Mengatur pesan kesalahan jika terjadi kesalahan selama proses
     } catch (error) {
       setError(error.message);
     }
+    // Mengatur status loading menjadi false setelah proses selesai
     setIsLoading(false);
+    // Menghapus pertanyaan yang sedang diproses
     setProcessingQuestion("");
   };
 

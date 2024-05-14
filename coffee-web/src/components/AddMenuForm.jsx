@@ -2,26 +2,20 @@ import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 // Inisialisasi URL dan kunci anonim Supabase
-const supabaseUrl = "https://sksjsvotnzydxcjfanxn.supabase.co";
-const supabaseAnonKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrc2pzdm90bnp5ZHhjamZhbnhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTUxNjE3NDMsImV4cCI6MjAzMDczNzc0M30.MNUSc9iuL2-pyi0Vk8syeZzke9g6X2sZ8HrupWfZ7Hk"; // Ganti dengan kunci anonim Supabase Anda
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const AddMenuForm = () => {
-  // State untuk menyimpan daftar menu
+  // State untuk menyimpan daftar menu, harga, gambar, menyimpan file yang dipilih, menu yang diedit
   const [menus, setMenus] = useState([]);
-  // State untuk menyimpan nama produk yang sedang dimasukkan
   const [productName, setProductName] = useState("");
-  // State untuk menyimpan URL gambar yang dipilih
   const [images, setImages] = useState([]);
-  // State untuk menyimpan harga produk yang dimasukkan
   const [price, setPrice] = useState("");
-  // State untuk menyimpan file yang dipilih
   const [selectedFiles, setSelectedFiles] = useState([]);
-  // State untuk menyimpan menu yang sedang diedit
   const [editingMenu, setEditingMenu] = useState(null);
 
-  //  Untuk memuat daftar menu saat komponen dimuat
+  //Untuk memuat daftar menu saat komponen dimuat
   useEffect(() => {
     fetchMenus();
   }, []);
@@ -29,98 +23,119 @@ const AddMenuForm = () => {
   // Fungsi untuk mengambil daftar menu dari Supabase
   const fetchMenus = async () => {
     try {
+      //Mengambil data dari tabel menu di supabase
       const { data, error } = await supabase.from("menu").select("*");
+      //Check apakah ada error saat mengambil data
       if (error) {
+        //Jika error akan muncul ke konsol
         console.error("Error fetching menus:", error.message);
       } else {
+        // Jika tidak ada error, mengatur data yang diambil ke dalam state menus
         setMenus(data);
       }
     } catch (error) {
+      // Menangani kesalahan yang terjadi di luar konteks Supabase (misalnya masalah jaringan)
       console.error("Error fetching menus:", error.message);
     }
   };
 
-  // Fungsi untuk menangani perubahan file yang dipilih
+  // Fungsi handle file gambar ketika di upload ke supabase berupa file
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
+    // Mengatur array file yang dipilih ke dalam state selectedFiles
     setSelectedFiles(files);
+    // Membuat URL objek untuk setiap file yang dipilih dan menyimpannya dalam array urls
     const urls = files.map((file) => URL.createObjectURL(file));
     setImages(urls);
   };
 
   // Fungsi untuk menangani pengiriman formulir
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); //Mencegah saat reload halaman
 
     try {
-      // Handle editing existing menu
+      // Jika sedang mengedit menu yang ada
       if (editingMenu) {
+        // Mengunggah file gambar yang dipilih
         const uploadPromises = selectedFiles.map(async (file) => {
           const { data, error: uploadError } = await supabase.storage
             .from("image_menu")
-            .upload(`${productName}-${Date.now()}`, file);
+            .upload(`${productName}-${Date.now()}`, file); // Mengunggah file ke Supabase Storage
 
           if (uploadError) {
+            // Jika terjadi kesalahan saat mengunggah
             console.error("Error uploading file:", uploadError.message);
           } else {
+            // Mengembalikan URL publik dari gambar yang diunggah
             return `${supabaseUrl}/storage/v1/object/public/image_menu/${data.path}`;
           }
         });
 
+        // Menunggu semua file selesai diunggah
         const imageUrls = await Promise.all(uploadPromises);
+        // Menyiapkan objek menu yang diperbarui
         const updatedMenu = {
           ...editingMenu,
           product_name: productName,
-          images: imageUrls[0],
+          images: imageUrls[0], // Menggunakan URL gambar pertama
           price: parseFloat(price),
         };
 
+        // Memperbarui menu di database
         const { error: updateError } = await supabase
           .from("menu")
           .update(updatedMenu)
           .eq("id", editingMenu.id);
 
         if (updateError) {
+          // Jika terjadi kesalahan saat memperbarui
           console.error("Error updating menu:", updateError.message);
         } else {
+          // Mengatur ulang state editingMenu jika berhasil
           setEditingMenu(null);
         }
       } else {
-        // Handle adding new menu
+        // Jika menambahkan menu baru
+        // Mengunggah file gambar yang dipilih
         const uploadPromises = selectedFiles.map(async (file) => {
           const { data, error: uploadError } = await supabase.storage
             .from("image_menu")
             .upload(`${productName}-${Date.now()}`, file);
 
           if (uploadError) {
+            // Jika terjadi kesalahan saat mengunggah
             console.error("Error uploading file:", uploadError.message);
           } else {
+            // Mengembalikan URL publik dari gambar yang diunggah
             return `${supabaseUrl}/storage/v1/object/public/image_menu/${data.path}`;
           }
         });
 
+        // Menunggu semua file selesai diunggah
         const imageUrls = await Promise.all(uploadPromises);
-
+        // Menyisipkan menu baru ke database
         const { error: insertError } = await supabase.from("menu").insert([
           {
             product_name: productName,
-            images: imageUrls[0],
-            price: parseFloat(price),
+            images: imageUrls[0], // Menggunakan URL gambar pertama
+            price: parseFloat(price), // Mengonversi harga menjadi angka
           },
         ]);
 
         if (insertError) {
+          // Jika terjadi kesalahan saat menyisipkan
           console.error("Error inserting menu:", insertError.message);
         }
       }
 
-      // Reset form state after successful form submission
+      // Mengatur ulang state form setelah pengiriman berhasil
       setProductName("");
       setImages([]);
       setPrice("");
       setSelectedFiles([]);
-      fetchMenus();
+      fetchMenus(); // Memperbarui daftar menu
     } catch (error) {
+      // Menangani kesalahan umum saat pengiriman form
       console.error("Error handling form submission:", error.message);
     }
   };
@@ -128,29 +143,35 @@ const AddMenuForm = () => {
   // Fungsi untuk menangani penghapusan menu
   const handleDelete = async (id, imagePath) => {
     try {
+      // Menghapus menu dari database berdasarkan ID
       const { error: deleteError } = await supabase
         .from("menu")
         .delete()
         .eq("id", id);
 
       if (deleteError) {
+        // Jika terjadi kesalahan saat menghapus menu
         console.error("Error deleting menu:", deleteError.message);
       } else {
+        // Mengambil nama file dari path URL
         const filename = imagePath.split("/").pop();
+        // Menghapus file gambar dari storage
         const { error: removeError } = await supabase.storage
           .from("image_menu")
           .remove([filename]);
 
         if (removeError) {
+          // Jika terjadi kesalahan saat menghapus file gambar
           console.error(
             "Error removing file from storage:",
             removeError.message
           );
         } else {
-          fetchMenus();
+          fetchMenus(); // Memperbarui daftar menu
         }
       }
     } catch (error) {
+      // Menangani kesalahan umum saat penghapusan menu dan file terkait
       console.error("Error deleting menu and associated file:", error.message);
     }
   };
@@ -158,6 +179,7 @@ const AddMenuForm = () => {
   // Fungsi untuk menangani pengeditan menu
   const handleEdit = (menu) => {
     setEditingMenu(menu);
+    // Mengatur state form dengan data menu yang akan diedit
     setProductName(menu.product_name);
     setImages([menu.images]);
     setPrice(menu.price.toString());
@@ -165,6 +187,7 @@ const AddMenuForm = () => {
 
   // Fungsi untuk membatalkan pengeditan
   const handleCancelEdit = () => {
+    // Mengatur ulang state form
     setEditingMenu(null);
     setProductName("");
     setImages([]);

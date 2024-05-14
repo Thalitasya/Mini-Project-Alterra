@@ -1,4 +1,3 @@
-// Import React dan hooks yang diperlukan
 import React, { createContext, useContext, useState } from "react";
 
 // Membuat context untuk menyimpan status login
