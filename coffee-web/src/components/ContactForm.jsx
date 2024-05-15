@@ -51,7 +51,7 @@ const ContactForm = () => {
       >
         {/* Input nama */}
         <div>
-          <label htmlFor="name" className="block font-medium ">
+          <label htmlFor="name" className="block font-medium">
             Nama
           </label>
           <input

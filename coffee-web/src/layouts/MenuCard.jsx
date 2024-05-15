@@ -20,4 +20,4 @@ const MenuCard = ({ menu }) => {
   );
 };
 
-export default MenuCard; // Ekspor komponen MenuCard agar bisa digunakan di tempat lain
+export default MenuCard; 

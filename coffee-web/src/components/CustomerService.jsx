@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function CustomerService() {
-  // State untuk menyimpan pertanyaan, jawaban, riwayat percakapan, status loading dari server, pesan kesalahan, pertayaan sedang diproses
+  //State untuk menyimpan pertanyaan, jawaban, riwayat percakapan, status loading dari server, pesan kesalahan, pertayaan sedang diproses
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [conversations, setConversations] = useState([]);

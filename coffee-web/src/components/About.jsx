@@ -13,8 +13,9 @@ const About = () => {
       <div className="flex flex-col lg:flex-row items-center gap-4">
         {/* Gambar */}
         <div className="w-full lg:w-2/4">
-          <img className="rounded-lg" src={img} alt="img" />
+          <img className="rounded-lg" src={img} alt="About Us Image" />
         </div>
+
         {/* Deskripsi */}
         <div className="w-full lg:w-2/4 p-5 space-y-4">
           <h2 className="font-semibold text-3xl">
