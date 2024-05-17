@@ -1,7 +1,7 @@
 # Latithara Cafe
 
 ## About Project
-Latithara Cafe Web adalah aplikasi web yang dirancang khusus untuk menghadirkan pengalaman kafe virtual bagi para pelanggan dan admin. Dengan fitur-fitur canggih dan antarmuka yang ramah pengguna, Latithara Cafe Web memungkinkan pelanggan untuk dengan mudah mengakses daftar menu, menghubungi kafe, serta berkonsultasi dengan layanan pelanggan berbasis AI. Selain itu, admin memiliki kemampuan untuk menambah, mengedit, dan menghapus item menu sesuai kebutuhan.
+Latithara Cafe Web adalah aplikasi web yang dirancang khusus untuk menghadirkan pengalaman kafe virtual bagi para pelanggan dan admin. Dengan fitur-fitur canggih dan antarmuka yang ramah pengguna, Latithara Cafe Web memungkinkan pelanggan untuk dengan mudah mengakses daftar menu, menghubungi kafe, serta berkonsultasi dengan layanan pelanggan berbasis AI. Selain itu, admin memiliki kemampuan untuk menambah, mengedit, dan menghapus item menu sesuai kebutuhan. 
 
 ## Features
 - Landing Page/Home Page statik (location) 
