@@ -133,7 +133,7 @@ const generateAnswerForQuestion = async (question) => {
     <div className="font-roboto bg-gray-100 min-h-screen py-8 text-black">
       <div className="max-w-6xl mx-auto overflow-hidden mt-20">
         <h1 className="text-4xl font-bold text-center font-serif">
-          Konsultasi dengan OpenAI
+          Konsultasi 
         </h1>
       </div>
       <div className="max-w-7xl py-2 px-2 mx-auto bg-white rounded-md shadow-md overflow-hidden mt-10">
