@@ -71,14 +71,14 @@ Berikut adalah langkah-langkah untuk menjalankan proyek ini secara lokal:
 2. Install dependencies:
    ```bash
     npm install
-
-3. Konfigurasi environment variables: Buat file .env di root proyek dan tambahkan variabel berikut:
-  ```.env
+3. Konfigurasi environment variables:
+   ```.env
     VITE_GENERATIVE_LANGUAGE_API_URL="https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
     VITE_GENERATIVE_LANGUAGE_API_KEY="AIzaSyDhfg1GTNmsES0CjJiSkgPQSm98CxtVkdc"
     VITE_SUPABASE_URL="https://sksjsvotnzydxcjfanxn.supabase.co"
     VITE_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrc2pzdm90bnp5ZHhjamZhbnhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTUxNjE3NDMsImV4cCI6MjAzMDczNzc0M30.MNUSc9iuL2-  pyi0Vk8syeZzke9g6X2sZ8HrupWfZ7Hk"
-
+   
 4. Jalankan server lokal:
-  ```bash
-  npm run dev
+```bash
+npm run dev
+
