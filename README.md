@@ -9,7 +9,7 @@ Latithara Cafe Web adalah aplikasi web yang dirancang khusus untuk menghadirkan 
 - formulir kontak untuk pertanyaan user (tanpa login) (POST-API) 
 - Login admin default  biar bisa menambahkan 
 - CRUD penambahan barang 
-- CS terkait menu yang ada disana
+- CS terkait menu yang ada di cafe
 
 
 ### User
