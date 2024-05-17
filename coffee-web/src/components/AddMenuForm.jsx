@@ -68,8 +68,8 @@ const AddMenuForm = () => {
       if (editingMenu) {
         const updatedMenu = {
           ...editingMenu,
-          product_name: productName,
-          images: imageUrls[0],
+          prame: productName,
+          images:oduct_n imageUrls[0],
           price: parseFloat(price),
         };
 
