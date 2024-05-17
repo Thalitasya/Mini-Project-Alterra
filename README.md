@@ -66,6 +66,6 @@ https://mini-project-alterra-eight.vercel.app
 - Install Depedencies : npm install
 - Setup Environment Variables
 - Start Development Server : npm run dev
-- Open in Browser : Buka http://localhost:0000 di browser untuk melihat aplikasi.
+- Open in Browser : Buka http://localhost di browser untuk melihat aplikasi.
 - Build for Production : npm run build
 - Run Production Server : npm start
