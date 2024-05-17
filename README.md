@@ -14,35 +14,35 @@ Latithara Cafe Web adalah aplikasi web yang dirancang khusus untuk menghadirkan 
 
 ### User
 Melihat Daftar Menu:
-Feature A: Melihat daftar menu makanan dan minuman yang dinamis.
-Feature B: Melihat deskripsi, harga, dan foto dari setiap item menu.
-Feature C: Menggunakan fitur filter dan pencarian untuk menemukan item menu dengan mudah.
+- Feature A: Melihat daftar menu makanan dan minuman yang dinamis.
+- Feature B: Melihat deskripsi, harga, dan foto dari setiap item menu.
+- Feature C: Menggunakan fitur filter dan pencarian untuk menemukan item menu dengan mudah.
 
 Menggunakan Formulir Kontak:
-Feature A: Mengirimkan pertanyaan atau feedback melalui formulir kontak.
-Feature B: Tidak perlu login untuk mengirimkan formulir.
-Feature C: Mendapatkan respons cepat dari layanan pelanggan.
+- Feature A: Mengirimkan pertanyaan atau feedback melalui formulir kontak.
+- Feature B: Tidak perlu login untuk mengirimkan formulir.
+- Feature C: Mendapatkan respons cepat dari layanan pelanggan.
 
 Interaksi dengan Layanan Pelanggan AI:
-Feature A: Konsultasi dengan chatbot AI untuk rekomendasi menu dan informasi.
-Feature B: Mendapatkan jawaban real-time atas pertanyaan umum.
-Feature C: Pengalaman interaksi yang dipersonalisasi berdasarkan riwayat pelanggan.
+- Feature A: Konsultasi dengan chatbot AI untuk rekomendasi menu dan informasi.
+- Feature B: Mendapatkan jawaban real-time atas pertanyaan umum.
+- Feature C: Pengalaman interaksi yang dipersonalisasi berdasarkan riwayat pelanggan.
 
 ### Admin
 Manajemen Menu:
-Feature A: Menambah item menu baru dengan deskripsi, harga, dan foto.
-Feature B: Mengedit item menu yang sudah ada untuk memperbarui informasi atau harga.
-Feature C: Menghapus item menu yang sudah tidak tersedia.
+- Feature A: Menambah item menu baru dengan deskripsi, harga, dan foto.
+- Feature B: Mengedit item menu yang sudah ada untuk memperbarui informasi atau harga.
+- Feature C: Menghapus item menu yang sudah tidak tersedia.
 
 Akses Admin Default:
-Feature A: Login menggunakan kredensial admin default.
-Feature B: Akses penuh ke fitur manajemen dan konfigurasi situs.
-Feature C: Autentikasi dasar untuk keamanan.
+- Feature A: Login menggunakan kredensial admin default.
+- Feature B: Akses penuh ke fitur manajemen dan konfigurasi situs.
+- Feature C: Autentikasi dasar untuk keamanan.
 
 Monitoring dan Manajemen Layanan Pelanggan AI:
-Feature A: Memantau interaksi chatbot AI dengan pelanggan.
-Feature B: Melatih dan memperbarui AI untuk meningkatkan kualitas layanan.
-Feature C: Mengintegrasikan data dari chatbot AI untuk analisis lebih lanjut.
+- Feature A: Memantau interaksi chatbot AI dengan pelanggan.
+- Feature B: Melatih dan memperbarui AI untuk meningkatkan kualitas layanan.
+- Feature C: Mengintegrasikan data dari chatbot AI untuk analisis lebih lanjut.
 
 ## Tech Stacks
 Daftar tools:
@@ -59,7 +59,7 @@ Daftar tools:
 - React icons
 
 ## Live App Demo
-[](https://mini-project-alterra-eight.vercel.app/)
+https://mini-project-alterra-eight.vercel.app
 
 ## Setup 
 - Clone repo
