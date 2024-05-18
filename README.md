@@ -73,10 +73,13 @@ Berikut adalah langkah-langkah untuk menjalankan proyek ini secara lokal:
     npm install
 3. Konfigurasi environment variables:
    ```.env
-    VITE_GENERATIVE_LANGUAGE_API_URL="https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
-    VITE_GENERATIVE_LANGUAGE_API_KEY="AIzaSyDhfg1GTNmsES0CjJiSkgPQSm98CxtVkdc"
-    VITE_SUPABASE_URL="https://sksjsvotnzydxcjfanxn.supabase.co"
-    VITE_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrc2pzdm90bnp5ZHhjamZhbnhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTUxNjE3NDMsImV4cCI6MjAzMDczNzc0M30.MNUSc9iuL2-  pyi0Vk8syeZzke9g6X2sZ8HrupWfZ7Hk"
+    VITE_GENERATIVE_LANGUAGE_API_URL="https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent" 
+    VITE_GENERATIVE_LANGUAGE_API_KEY="masukkan api key dari gemini"
+    VITE_SUPABASE_URL="https://sksjsvotnzydxcjfanxn.supabase.co"//sesuaikan dengan url dari supabase anda
+    VITE_SUPABASE_ANON_KEY="masukkan supabase anon key anda sendiri dari supabase"
+   //Pada baris kode 'VITE_GENERATIVE_LANGUANGE_API_KEY' ini silahkan buat akun di gemini openAI dan create
+   // Untuk mendapatkan Supabase Anon Key, pertama, daftar dan buat proyek di [Supabase](https://supabase.com/). Setelah proyek dibuat, navigasikan ke proyek tersebut, buka "Settings", dan pilih "API". Di halaman API settings, temukan bagian "API Keys" dan salin "anon key". Kemudian, buka file `.env` Anda dan tempelkan Anon Key yang telah Anda salin ke dalam baris `VITE_SUPABASE_ANON_KEY`.
+
    
 4. Jalankan server lokal:
 ```bash
