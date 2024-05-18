@@ -75,10 +75,10 @@ Berikut adalah langkah-langkah untuk menjalankan proyek ini secara lokal:
    ```.env
     VITE_GENERATIVE_LANGUAGE_API_URL="https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent" 
     VITE_GENERATIVE_LANGUAGE_API_KEY="masukkan api key dari gemini"
-    VITE_SUPABASE_URL="https://sksjsvotnzydxcjfanxn.supabase.co"//sesuaikan dengan url dari supabase anda
+    VITE_SUPABASE_URL="https://sksjsvotnzydxcjfanxn.supabase.co" //sesuaikan dengan url dari supabase anda
     VITE_SUPABASE_ANON_KEY="masukkan supabase anon key anda sendiri dari supabase"
    //Pada baris kode 'VITE_GENERATIVE_LANGUANGE_API_KEY' ini silahkan buat akun di gemini openAI dan create
-   // Untuk mendapatkan Supabase Anon Key, pertama, daftar dan buat proyek di [Supabase](https://supabase.com/). Setelah proyek dibuat, navigasikan ke proyek tersebut, buka "Settings", dan pilih "API". Di halaman API settings, temukan bagian "API Keys" dan salin "anon key". Kemudian, buka file `.env` Anda dan tempelkan Anon Key yang telah Anda salin ke dalam baris `VITE_SUPABASE_ANON_KEY`.
+   // Pada baris kode 'VITE_SUPABASE_ANON_KEY untuk mendapatkan Supabase Anon Key, pertama, daftar dan buat proyek di [Supabase](https://supabase.com/). Setelah proyek dibuat, navigasikan ke proyek tersebut, buka "Settings", dan pilih "API". Di halaman API settings, temukan bagian "API Keys" dan salin "anon key". Kemudian, buka file `.env` Anda dan tempelkan Anon Key yang telah Anda salin ke dalam baris `VITE_SUPABASE_ANON_KEY`.
 
    
 4. Jalankan server lokal:
